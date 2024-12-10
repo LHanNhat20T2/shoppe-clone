@@ -1,2 +1,2 @@
-import { RegisterLayout } from './RegisterLayout'
+import RegisterLayout from './RegisterLayout'
 export default RegisterLayout
