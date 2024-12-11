@@ -4,6 +4,7 @@ import useRouteElement from './useRouteElement'
 
 function App() {
   const routeElements = useRouteElement()
+  console.log(routeElements) // Kiểm tra giá trị routeElements
   return (
     <>
       {routeElements}
