@@ -4,13 +4,15 @@ import { useMutation } from '@tanstack/react-query'
 import { logout } from 'src/apis/auth.api'
 import { useContext } from 'react'
 import { AppContext } from 'src/contexts/app.context'
+import path from 'src/constants/path'
 
 const Header = () => {
-  const { setIsAuthenticated, isAuthenticated } = useContext(AppContext)
+  const { setIsAuthenticated, isAuthenticated, setProfile, profile } = useContext(AppContext)
   const logoutMutation = useMutation({
     mutationFn: logout,
     onSuccess: () => {
       setIsAuthenticated(false)
+      setProfile(null)
     }
   })
   const handleLogout = () => {
@@ -59,14 +61,14 @@ const Header = () => {
           </Popover>
           {isAuthenticated && (
             <Popover
-              className='flex items-center py-1 ml-6 cursor-pointer hover:text-gray-300'
+              className='flex items-center py-1 ml-6 cursor-pointer hover:text-white hover:opacity-7'
               renderPopover={
                 <div className='relative bg-white border border-gray-200 rounded-sm shadow-md'>
                   <Link
-                    to='/profile'
+                    to={path.profile}
                     className='block w-full px-3 py-3 text-left bg-white hover:bg-slate-100 hover:text-cyan-500'
                   >
-                    Tài khoản của tôi{' '}
+                    Tài khoản của tôi
                   </Link>
                   <Link
                     to='/'
@@ -91,16 +93,16 @@ const Header = () => {
                   alt=''
                 />
               </div>
-              <div>HanNhat</div>
+              <div>{profile?.email}</div>
             </Popover>
           )}
           {!isAuthenticated && (
             <div className='flex items-center'>
-              <Link to='/register ' className='mx-3 capitalize hover:text-white opacity-70'>
+              <Link to={path.register} className='mx-3 text-white capitalize hover:opacity-70'>
                 Đăng ký
               </Link>
               <div className='border-r-[1px] border-r-white'></div>
-              <Link to='/login ' className='mx-3 capitalize hover:text-white opacity-70'>
+              <Link to={path.login} className='mx-3 text-white capitalize hover:opacity-70'>
                 Đăng nhập
               </Link>
             </div>

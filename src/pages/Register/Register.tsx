@@ -8,10 +8,15 @@ import { registerAccount } from 'src/apis/auth.api'
 import { omit } from 'lodash'
 import { isAxiosUnprocessableEntityError } from 'src/utils/utils'
 import { ErrorResponse } from 'src/types/utils.type'
+import Button from 'src/components/Button'
+import path from 'src/constants/path'
+import { useContext } from 'react'
+import { AppContext } from 'src/contexts/app.context'
 
 type FormData = Schema
 
 const Register = () => {
+  const { setIsAuthenticated, setProfile } = useContext(AppContext)
   const {
     register,
     handleSubmit,
@@ -29,6 +34,8 @@ const Register = () => {
     const body = omit(data, ['confirm_password'])
     registerAccountMutation.mutate(body, {
       onSuccess: (data) => {
+        setIsAuthenticated(true)
+        setProfile(data.data.data.user)
         console.log(data)
       },
       onError: (error) => {
@@ -93,14 +100,18 @@ const Register = () => {
                 autoComplete='on'
               />
               <div className='mt-2'>
-                <button className='w-full px-2 py-4 text-sm text-center text-white uppercase bg-red-500 hover:bg-red-600'>
+                <Button
+                  className='flex items-center justify-center w-full px-2 py-4 text-sm text-white uppercase bg-red-500 hover:bg-red-600'
+                  isLoading={registerAccountMutation.isPending}
+                  disabled={registerAccountMutation.isPending}
+                >
                   Đăng ký
-                </button>
+                </Button>
               </div>
               <div className='mt-8 '>
                 <div className='flex items-center justify-center'>
                   <span className='text-slate-400'>Bạn đã có tài khoản?</span>
-                  <Link className='ml-1 text-red-400' to='/login'>
+                  <Link className='ml-1 text-red-400' to={path.login}>
                     Đăng nhập
                   </Link>
                 </div>
